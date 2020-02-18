@@ -16,7 +16,7 @@
 
 using namespace std;
 
-int input_opp(string fname, DoublyLinked<string>* opps, int* size);
+int input_opp(string fname, DoublyLinked<string>* opps);
 
 int main(int argc, char** argv) {
     if(argc > 1) {
@@ -30,48 +30,55 @@ int main(int argc, char** argv) {
     fname = "../test/test1.txt";
 
     DoublyLinked<string> *opps = new DoublyLinked<string>;
-    int size;
-    if(!input_opp(fname, opps, &size)) {
-        cout << "File: " << fname << " not found." << endl;
-        cout << "Exiting..." << endl;
-        exit(-1);
+    if(!input_opp(fname, opps)) {
+        throw invalid_argument("File not found");
     }
 
-    string args;
-    opps->toString(&args);
+    cout << endl << "Number of operations: " << opps->getSize() << endl;
+    cout << "Operations: " << opps->toString();
+    cout << endl << endl << endl;
 
-    cout << endl << "Number of operations: " << size << endl;
-    cout << "Operations: ";
-    cout << args << endl << endl;
+    DoublyLinked<int>* data = new DoublyLinked<int>;
+    int dataSize = 0;
 
+    for(int i=0; i<opps->getSize(); ++i) {
+        string opp = opps->get(i);
+        int after = -1;
 
-    DoublyLinked<int> data;
-    int past_delim = args.find('\n', 1);
-
-    for(int i=0; i<size; ++i) {
-        int beg = args.find('\n', past_delim+1);
-        string opp = args.substr(past_delim, beg);
-        past_delim = beg;
-
-        string sub_opp = "none";
-
-        short delim = 0;//opp.find('.');
-        short sub_delim = 0;//opp.find('_');
-
-        cout << opp << endl;        
-        //cout << delim << endl;
-        //cout << opp.substr(0,delim) << endl;
-        //int num = stoi(opp.substr(0,delim), nullptr);
-
+        short delim = opp.find('.');
+        short sub_delim = opp.find('_');
+        int num = stoi(opp.substr(0,delim), nullptr);
         
-        //if(sub_delim == opp.npos) opp = opp.substr(delim);
-        //else {
-        //    sub_opp = opp.substr(sub_delim);
-        //    opp = opp.substr(delim, sub_delim);
-        //}
+        if(sub_delim == opp.npos) opp = opp.substr(delim+1);
+        else {
+            after = stoi(opp.substr(sub_delim+1), nullptr);
+            opp = opp.substr(delim+1, sub_delim);
+        }
 
-//        cout << "Number: " << num << " - Operation: " << opp << " - sub_opp: " << sub_opp << endl;        
+        string orig = data->toString();
+        cout << "Operation:\t" << num << '.' << opp;
 
+        int result;
+
+        if(opp == "in") {
+            if(after == -1) result = data->insert(num);
+            else result = data->insert(num, after);
+            cout << endl;
+        }
+        else if(opp == "del") {
+            result = data->del(num);
+            cout << endl;
+        }
+        else if(opp == "sch") {
+            if(data->srch(num) == 1) cout << "\tFOUND" << endl;
+            else cout <<  "\tNOT FOUND" << endl;
+        }
+        else throw invalid_argument("Operation not recognized");
+
+        if(result == -2) cout << "DUPLICATE KEY" << endl;
+
+        cout << "List before:\t" << orig << endl;    
+        cout << "List after:\t" << data->toString() << endl << endl;
     }
 
     return 0;
@@ -79,7 +86,7 @@ int main(int argc, char** argv) {
 
 
 
-int input_opp(string fname, DoublyLinked<string>* opps, int* size) {
+int input_opp(string fname, DoublyLinked<string>* opps) {
     fname = "../test/test1.txt";
 
     ifstream file(fname);
@@ -91,16 +98,7 @@ int input_opp(string fname, DoublyLinked<string>* opps, int* size) {
         return -1;
     }
 
-    char c;
-    *size = 0;
-    while(file >> c) {
-        if(c == ' ') ++*size;
-    }
-
-    ++*size;
     string line;
-
-    int i = 0;
 
     file.clear();    
     file.seekg(0);

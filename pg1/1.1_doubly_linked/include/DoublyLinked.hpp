@@ -13,17 +13,22 @@
 
 template<class T>
 class DoublyLinked {
+    private:
+        DoublyLinked(T key);
     public:
         DoublyLinked();
-        DoublyLinked(T key);
         ~DoublyLinked();
 
-        bool append(T key);        
-        bool insert(T key, int prev_key);
-        bool del(T key);
-        bool srch(T key);
+        int append(T key);        
+        int insert(T key, int prev_key);
+        int insert(T key);
+        int del(T key);
 
-        void toString(std::string* s);
+        int srch(T key);
+        T get(int index);
+        int getSize();
+
+        std::string toString();
 
         DoublyLinked* next;
         DoublyLinked* prev;
