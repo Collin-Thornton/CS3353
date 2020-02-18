@@ -14,9 +14,19 @@
 template<class T>
 class DoublyLinked {
     private:
-        DoublyLinked(T key);
+        DoublyLinked(T key, bool allow_dupplicates);
+        bool allow_dupplicates = false;
+
+        struct Node {
+            T key;
+            struct Node* next;
+            struct Node* prev;
+        };
+
+        struct Node* create_node(T key, Node* next = nullptr, Node* prev = nullptr);
+
     public:
-        DoublyLinked();
+        DoublyLinked(bool allow_dupplicates = false);
         ~DoublyLinked();
 
         int append(T key);        
@@ -29,13 +39,9 @@ class DoublyLinked {
         int getSize();
 
         std::string toString();
-
-        DoublyLinked* next;
-        DoublyLinked* prev;
-        T key;
         
-        DoublyLinked* HEAD;
-        DoublyLinked* TAIL;
+        Node* HEAD;
+        Node* TAIL;
 };
 
 #include "DoublyLinked_impl.hpp"

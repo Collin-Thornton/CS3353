@@ -9,25 +9,29 @@
 #include <sstream>
 
 template<class T>
-DoublyLinked<T>::DoublyLinked() { 
-    HEAD = this;
-    TAIL = this;
+DoublyLinked<T>::DoublyLinked(bool allow_dupplicates) { 
+    this->allow_dupplicates = allow_dupplicates;
+    Node* node = new Node;
+    HEAD = node;
+    TAIL = node;
 }
 template<class T>
-DoublyLinked<T>::DoublyLinked(T key) {
-    HEAD = this;
-    TAIL = this;
-    this->key = key;
+DoublyLinked<T>::DoublyLinked(T key, bool allow_dupplicates) {
+    Node* node = new Node;
+    HEAD = node;
+    TAIL = node;
+    node->key = key;
+    this->allow_dupplicates = allow_dupplicates;
 
-    prev = NULL;
-    next = NULL;
+    node->prev = NULL;
+    node->next = NULL;
 }
 template<class T>
 DoublyLinked<T>::~DoublyLinked() {      //! Work on this
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
 
     while(tmp != TAIL) {
-        DoublyLinked* next = tmp->next;
+        Node* next = tmp->next;
         //free(tmp);
         tmp = next;
     }
@@ -36,8 +40,17 @@ DoublyLinked<T>::~DoublyLinked() {      //! Work on this
     //free(tmp);
 }
 template<class T>
+struct DoublyLinked<T>::Node* DoublyLinked<T>::create_node(T key, Node* next, Node* prev) {
+    Node* new_node = new Node;
+    new_node->key = key;
+    if(next != nullptr) new_node->next = next;
+    if(prev != nullptr) new_node->prev = prev;
+
+    return new_node;
+}
+template<class T>
 int DoublyLinked<T>::getSize() {
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
     int i=0;
     while(tmp != TAIL) {
         tmp = tmp->next;
@@ -47,54 +60,42 @@ int DoublyLinked<T>::getSize() {
 }
 template<class T>
 int DoublyLinked<T>::append(T key) {
-    if(srch(key) == 1) return -2;
+    if(!allow_dupplicates && srch(key) == 1) return -2;
 
-    DoublyLinked* tmp = TAIL;
-    DoublyLinked* prev = tmp;
-    
-    tmp->next = new DoublyLinked(key);
-    
-    tmp = tmp->next;
-    tmp->prev = prev;
-    tmp->next = NULL;
-    TAIL = tmp;
+    Node* tmp = TAIL;    
+    tmp->next = create_node(key, NULL, tmp);
+    TAIL = tmp->next;
 
     return 1;
 }
 template<class T>
 int DoublyLinked<T>::insert(T key, int prev_key) {
     if(srch(prev_key) == -1) return -1;
-    if(srch(key) == 1) return -2;
+    if(!allow_dupplicates && srch(key) == 1) return -2;
 
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
     while(tmp->key != prev_key) tmp = tmp->next;
 
     if(tmp == TAIL) return append(key); 
     if(tmp == HEAD) return insert(key);
 
-    DoublyLinked* next = tmp->next;
-    DoublyLinked* prev = tmp;
-    tmp->next = new DoublyLinked(key);
+    Node* prev = tmp;
+    tmp->next = create_node(key, tmp->next, tmp->prev);
     tmp = tmp->next;
-
+    tmp = tmp->next;
     tmp->prev = prev;
-    tmp->next = next;
 
     return true;
 }
 template<class T>
 int DoublyLinked<T>::insert(T key) {
-    if(srch(key) == 1) return -2;
-    DoublyLinked* tmp = HEAD;
-    DoublyLinked* next = tmp;
+    if(!allow_dupplicates && srch(key) == 1) return -2;
+    Node* tmp = HEAD;
+    Node* next = tmp;
 
     tmp->key = key;
-    tmp->prev = new DoublyLinked();
-    
-    tmp = tmp->prev;
-    tmp->next = next;
-    tmp->prev = NULL;
-    HEAD = tmp;
+    tmp->prev = create_node(key, tmp, NULL);
+    HEAD = tmp->prev;
 
     return 1;
 }
@@ -102,7 +103,7 @@ template<class T>
 int DoublyLinked<T>::del(T key) {
     if(srch(key) == -1) return -1;
 
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
     while(tmp->key != key) tmp = tmp->next;
 
     if(tmp == HEAD) {
@@ -111,24 +112,24 @@ int DoublyLinked<T>::del(T key) {
         delete tmp;       
         return 1;
     }
-    else if(tmp == TAIL) {
+    if(tmp == TAIL) {
         TAIL = tmp->prev;
         TAIL->next = NULL;
         delete tmp;        
         return 1;
     }
 
-    DoublyLinked* prev = tmp->prev;
-    DoublyLinked* next = tmp->next;
+    Node* prev = tmp->prev;
+    Node* next = tmp->next;
 
     prev->next = next;
     next->prev = prev;
-    free(tmp);
+    delete tmp;
     return 1;
 }
 template<class T>
 int DoublyLinked<T>::srch(T key) {
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
     while(tmp != TAIL) {
         tmp = tmp->next;
         if(tmp->key == key) return 1;
@@ -138,7 +139,7 @@ int DoublyLinked<T>::srch(T key) {
 }
 template<class T>
 T DoublyLinked<T>::get(int index) {
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
     int i=0;
 
     while(tmp != TAIL && i <= index) {
@@ -152,7 +153,7 @@ template<class T>
 std::string DoublyLinked<T>::toString() {
     if(TAIL == HEAD) return "NULL";
 
-    DoublyLinked* tmp = HEAD;
+    Node* tmp = HEAD;
     tmp = tmp->next;
 
     std::ostringstream ss;
