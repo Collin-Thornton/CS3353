@@ -9,22 +9,29 @@
 #ifndef DOUBLE_LINKED
 #define DOUBLE_LINKED
 
+#include <string>
+
+template<class T>
 class DoublyLinked {
     public:
-        DoublyLinked(int key);
+        DoublyLinked();
+        DoublyLinked(T key);
         ~DoublyLinked();
 
-        bool append(int key);        
-        bool insert(int key, int prev_key);
-        bool del(int key);
-        bool srch(int key);
+        bool append(T key);        
+        bool insert(T key, int prev_key);
+        bool del(T key);
+        bool srch(T key);
+
+        void toString(std::string* s);
 
         DoublyLinked* next;
         DoublyLinked* prev;
-        int key;
+        T key;
         
         DoublyLinked* HEAD;
         DoublyLinked* TAIL;
 };
 
-#endif DOUBLE_LINKED
+#include "DoublyLinked_impl.hpp"
+#endif
