@@ -37,7 +37,6 @@ DoublyLinked<T>::~DoublyLinked() {      //! Work on this
         tmp = next;
     }
     delete HEAD;
-    delete TAIL;
 }
 template<class T>
 struct DoublyLinked<T>::Node* DoublyLinked<T>::create_node(T key, Node* next, Node* prev) {
