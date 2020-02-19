@@ -25,9 +25,10 @@ int main(int argc, char** argv) {
 
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
-//    cin >> fname;
+    cout << "Filename: ";
+    cin >> fname;
 
-    fname = "../test/test2.txt";
+    //fname = "../test/test2.txt";
 
     DoublyLinked<string> *opps = new DoublyLinked<string>(true);
     if(!input_opp(fname, opps)) {
@@ -79,7 +80,6 @@ int main(int argc, char** argv) {
 
         cout << "List before:\t" << orig << endl;    
         cout << "List after:\t" << data->toString() << endl << endl;
-//        cout << "Result: " << result << endl << endl;
     }
 
     delete data;

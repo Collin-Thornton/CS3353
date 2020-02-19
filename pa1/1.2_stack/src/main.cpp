@@ -21,9 +21,10 @@ int main(int argc, char** argv) {
 
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
-    //cin >> fname;
+    cout << "Filename: ";
+    cin >> fname;
 
-    fname = "../test/test1.txt"; 
+    //fname = "../test/test1.txt"; 
     ifstream file(fname);
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
 

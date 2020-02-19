@@ -17,22 +17,42 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-    CircularQueue<int> queue = CircularQueue<int>(8);
+    if(argc > 1) cout << "There are no command line arguments" << endl;
 
-    for(int i=0; i<5; ++i) {
-        cout << "Operation:\t" << "1.ins" << endl;
-        cout << "First:\t" << queue.first << " Len:\t" << queue.len << " Size:\t" << queue.size << endl;
-        cout << "Original Queue:\t" << queue.toString() << endl;
-        queue.insert(2);
-        cout << "First:\t" << queue.first << " Len:\t" << queue.len << " Size:\t" << queue.size << endl;
-        cout << "New Queue:\t" << queue.toString() << endl << endl;
-    }
-        for(int i=0; i<5; ++i) {
-        cout << "Operation:\t" << "pull" << endl;
-        cout << "First:\t" << queue.first << " Len:\t" << queue.len << " Size:\t" << queue.size << endl;
-        cout << "Original Queue:\t" << queue.toString() << endl;
-        queue.pull();
-        cout << "First:\t" << queue.first << " Len:\t" << queue.len << " Size:\t" << queue.size << endl;
+    string fname;
+    cout << "Please specify the name of the file containing operations" << endl;
+    cout << "Filename: ";
+    cin >> fname;
+
+    //fname = "../test/test1.txt"; 
+    ifstream file(fname);
+    if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
+
+    string line;
+    getline(file, line, ' ');
+
+    int size = stoi(line, nullptr);
+    CircularQueue<int> queue = CircularQueue<int>(size);
+
+    cout << "Queue Size:\t" << size << endl << endl;
+
+    while(getline(file, line, ' ')) {
+        string old_queue = queue.toString();
+
+        int result;
+        if(line == "del") result = queue.pull();
+        else {
+            int delim = line.find('.');
+            if(delim == line.npos) throw invalid_argument("OPERATION NOT RECOGNIZED");
+            int key = stoi(line.substr(0, delim));
+            string opp = line.substr(delim+1);
+            if(opp != "in") throw invalid_argument("OPERATION NOT RECOGNIZED");
+
+            result = queue.insert(key);
+        }
+
+        cout << "Operation:\t" << line << endl;
+        cout << "Old Queue:\t" << old_queue << endl;
         cout << "New Queue:\t" << queue.toString() << endl << endl;
     }
 }

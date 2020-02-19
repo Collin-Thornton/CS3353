@@ -20,14 +20,14 @@ CircularQueue<T>::~CircularQueue() {
 }
 template <class T>
 int CircularQueue<T>::insert(T key) {
-    if(++len > size) throw std::invalid_argument("QUEUE OVERFLOW");
-    queue[((first+len)%size)] = key;
+    if(len+1 > size) throw std::invalid_argument("QUEUE OVERFLOW");
+    queue[((first+len++)%size)] = key;
     return 1;
 }
 template <class T>
 T CircularQueue<T>::pull() {
     if(--len < 0) throw std::invalid_argument("QUEUE UNDERFLOW");
-    return queue[(++first%size)];
+    return queue[(first++%size)];
 }
 template <class T>
 std::string CircularQueue<T>::toString() {
