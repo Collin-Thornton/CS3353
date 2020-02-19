@@ -82,6 +82,9 @@ int main(int argc, char** argv) {
 //        cout << "Result: " << result << endl << endl;
     }
 
+    delete data;
+    delete opps;
+
     return 0;
 }
 

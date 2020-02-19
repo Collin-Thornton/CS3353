@@ -8,7 +8,7 @@
 
 #include "DoublyLinked.hpp"
 #include <sstream>
-
+#include <iostream>
 template<class T>
 DoublyLinked<T>::DoublyLinked(bool allow_dupplicates) { 
     this->allow_dupplicates = allow_dupplicates;
@@ -33,12 +33,11 @@ DoublyLinked<T>::~DoublyLinked() {      //! Work on this
 
     while(tmp != TAIL) {
         Node* next = tmp->next;
-        //free(tmp);
+        delete tmp;
         tmp = next;
     }
-    //free(HEAD);
-    //free(TAIL);
-    //free(tmp);
+    delete HEAD;
+    delete TAIL;
 }
 template<class T>
 struct DoublyLinked<T>::Node* DoublyLinked<T>::create_node(T key, Node* next, Node* prev) {
