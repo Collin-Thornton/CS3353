@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 
-#include "DoublyLinked.hpp"
+#include "../include/DoublyLinked.hpp"
 
 using namespace std;
 
