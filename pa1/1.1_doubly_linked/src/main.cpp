@@ -1,6 +1,7 @@
 // ##########################################
 // 
 //   Author  -   Collin Thornton
+//   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 1
 //   Alg     -   Doubly Linked List
@@ -20,6 +21,7 @@ const string HEADER = R"(
 // ##########################################
 // 
 //   Author  -   Collin Thornton
+//   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 1
 //   Alg     -   Parenthesis Check

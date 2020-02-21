@@ -1,6 +1,7 @@
 // ##########################################
 // 
 //   Author  -   Collin Thornton
+//   Email   -   collin.thornton@okstate.edu
 //   Alg     -   Stack INCLUDE
 //   Date    -   2-18-20
 //

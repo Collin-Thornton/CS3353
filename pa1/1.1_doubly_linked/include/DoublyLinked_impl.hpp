@@ -1,6 +1,7 @@
 // ##########################################
 // 
 //   Author  -   Collin Thornton
+//   Email   -   collin.thornton@okstate.edu
 //   Alg     -   Doubly Linked List SOURCE
 //   Date    -   2-16-20
 //

@@ -1,6 +1,7 @@
 // ##########################################
 // 
 //   Author  -   Collin Thornton
+//   Email   -   collin.thornton@okstate.edu
 //   Alg     -   Circular Queue INCLUDE
 //   Date    -   2-18-20
 //
