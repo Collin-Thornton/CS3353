@@ -61,5 +61,5 @@ std::string Stack<T>::toString() {
 }
 template<class T>
 int Stack<T>::getSize() {
-    return size;
+    return pos+1;
 }

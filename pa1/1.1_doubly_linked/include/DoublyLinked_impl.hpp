@@ -28,7 +28,7 @@ DoublyLinked<T>::DoublyLinked(T key, bool allow_dupplicates) {
     node->next = NULL;
 }
 template<class T>
-DoublyLinked<T>::~DoublyLinked() {      //! Work on this
+DoublyLinked<T>::~DoublyLinked() {    
     Node* tmp = HEAD;
 
     while(tmp != TAIL) {
@@ -36,7 +36,6 @@ DoublyLinked<T>::~DoublyLinked() {      //! Work on this
         delete tmp;
         tmp = next;
     }
-//    delete HEAD;
 }
 template<class T>
 struct DoublyLinked<T>::Node* DoublyLinked<T>::create_node(T key, Node* next, Node* prev) {

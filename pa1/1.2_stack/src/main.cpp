@@ -16,7 +16,21 @@
 
 using namespace std;
 
+const string HEADER = R"(
+// ##########################################
+// 
+//   Author  -   Collin Thornton
+//   Class   -   CS 3353
+//   Assgn   -   PA 1
+//   Alg     -   Parenthesis Check
+//   Due     -   2-21-2020
+//
+// ##########################################  
+)";
+
 int main(int argc, char** argv) {
+    cout << HEADER << endl << endl << endl;
+    
     if(argc > 1) cout << "There are no command line arguments" << endl;
 
     string fname;
