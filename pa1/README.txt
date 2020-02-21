@@ -25,6 +25,7 @@ FILE STRUCTURE
             src
                 main.cpp
 
+    - .tar files have been included to preserve original organization
             
 COMPILATION INSTRUCTIONS
     
