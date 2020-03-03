@@ -64,3 +64,4 @@ template<class T>
 int Stack<T>::getSize() {
     return size;
 }
+
