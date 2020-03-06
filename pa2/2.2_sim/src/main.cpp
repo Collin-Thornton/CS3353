@@ -50,15 +50,18 @@ int main(int argc, char** argv) {
 
     string line;
     Heap<Job> arrivalHeap = Heap<Job>(true, true);
+    Heap<Job> priorityHeap = Heap<Job>(true, true);
 
     int i = 0;
     while(getline(file, line, '\n')) {
         string name;
         int priority, arrivalTime, length;
         getJob(line, name, priority, arrivalTime, length);
-        Job *job = new Job(name, priority, arrivalTime, length);
+        Job *jobCompArriv = new Job(name, priority, arrivalTime, length, true);
+        Job *jobCompPrior = new Job(name, priority, arrivalTime, length, false);
 
-        arrivalHeap.insertNode(job);
+        arrivalHeap.insertNode(jobCompArriv);
+        priorityHeap.insertNode(jobCompPrior);
         cout << endl << "ARRIVAL HEAP:\n" << arrivalHeap.toString() << endl;
     }
 

@@ -11,25 +11,32 @@ class Job {
         long arrival_time;
         int length;
 
+        bool compareArrivalTime;
+
     public:
         bool operator == (Job const &obj) {
-            return (priority == obj.priority);
+            if (!compareArrivalTime) return (priority == obj.priority);
+            else return (arrival_time == obj.arrival_time);
         }
         bool operator >= (Job const &obj) {
-            return (priority >= obj.priority);
+            if (!compareArrivalTime) return (priority >= obj.priority);
+            else return (arrival_time >= obj.arrival_time);
         }
         bool operator <= (Job const &obj) {
-            return (priority <= obj.priority);
+            if (!compareArrivalTime) return (priority <= obj.priority);
+            else return (arrival_time <= obj.arrival_time);
         }
         bool operator < (Job const &obj) {
-            return (priority < obj.priority);
+            if (!compareArrivalTime) return (priority < obj.priority);
+            else return (arrival_time < obj.arrival_time);
         }
         bool operator > (Job const &obj) {
-            return (priority > obj.priority);
+            if (!compareArrivalTime) return (priority > obj.priority);
+            else return (arrival_time > obj.arrival_time);
         }
         friend std::ostringstream& operator << (std::ostringstream &ss, const Job &job);
 
-        Job(std::string id, int priority, long arrival_time, int length);
+        Job(std::string id, int priority, long arrival_time, int length, bool compareArrivalTime = false);
         
         int work(int times = 1);
 

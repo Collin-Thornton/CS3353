@@ -1,19 +1,20 @@
 #include "../include/job.hpp"
 
 std::ostringstream& operator << (std::ostringstream &ss, const Job &job){
-    ss << "ID:\t\t" << job.id << std::endl;
-    ss << "Priority:\t" << job.priority << std::endl;
-    ss << "Arrival Time:\t" << job.arrival_time << std::endl;
-    ss << "Length:\t\t" << job.length << std::endl;
+    ss << "\tID:\t\t" << job.id << std::endl;
+    ss << "\tPriority:\t" << job.priority << std::endl;
+    ss << "\tArrival Time:\t" << job.arrival_time << std::endl;
+    ss << "\tLength:\t\t" << job.length << std::endl;
     return ss;
 }
 
-Job::Job(std::string id, int priority, long arrival_time, int length) {
+Job::Job(std::string id, int priority, long arrival_time, int length, bool compareArrivalTime) {
     this->id = id;
 
     this->priority = priority;
     this->arrival_time = arrival_time;
     this->length = length;
+    this->compareArrivalTime = compareArrivalTime;
 }
 int Job::work(int times) {
     length -= times;

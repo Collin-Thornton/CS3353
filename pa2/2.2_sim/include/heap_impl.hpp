@@ -177,7 +177,7 @@ template<class T>
 void Heap<T>::preorder(std::ostringstream *ss, short index) {
     if(index >= length) return; 
     
-    *ss << *heap[index].key << ' ';
+    *ss << *heap[index].key << std::endl;
     preorder(ss, index*2+1);
     preorder(ss, index*2+2);
 }
@@ -187,19 +187,19 @@ void Heap<T>::postorder(std::ostringstream *ss, short index) {
 
     postorder(ss, index*2+1);
     postorder(ss, index*2+2);
-    *ss << *heap[index].key << ' ';
+    *ss << *heap[index].key << std::endl;
 }
 template<class T>
 void Heap<T>::inorder(std::ostringstream *ss, short index) {
     if(index >= length) return;
 
     inorder(ss, index*2+1);
-    *ss << *heap[index].key << ' ';
+    *ss << *heap[index].key << std::endl;
     inorder(ss, index*2+2);
 }
 template<class T>
 void Heap<T>::breadth(std::ostringstream *ss, short index) {
     for(int i=index; i<size(); ++i) {
-        *ss << *heap[i].key << ' ';
+        *ss << *heap[i].key << std::endl;
     }
 }
