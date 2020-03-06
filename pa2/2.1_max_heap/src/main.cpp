@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 
             result = heap.insertNode(key);
         }
--
+
         cout << "Operation:\t"  << line << endl;
         cout << "Old Heap:\t"   << old_heap << endl;
         cout << "New Heap:\t"   << heap.toString(traversal) << endl << endl;

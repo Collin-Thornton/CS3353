@@ -57,7 +57,7 @@ bool Heap<T>::isEmpty() {
     return (length == 0);
 }
 template<class T>
-int Heap<T>::insertNode(T key) {
+int Heap<T>::insertNode(T *key) {
     expandExternalLayer();
 
     heap[length].pos = length;
@@ -74,10 +74,10 @@ T Heap<T>::pop() {
     if(size() == 0) throw std::invalid_argument("HEAP UNDERFLOW");
 
     removeExternalLayer();
-    T key = heap[0].key;
-    heap[0].key = heap[length-1].key;
+    T key = *heap[0].key;
+    *heap[0].key = *heap[length-1].key;
 
-    heap[length-1].key = 0;
+    *heap[length-1].key = 0;
     heap[length-1].isExternal = true;
 
     downHeap();
@@ -91,19 +91,19 @@ void Heap<T>::upHeap() {
     
     int index = length;
     if(minimal) {
-        while((heap[index].key < heap[(index-1)/2].key) && index != 0) {
-            T tmp = heap[(index-1)/2].key;
-            heap[(index-1)/2].key = heap[index].key;
-            heap[index].key = tmp;
+        while((*heap[index].key < *heap[(index-1)/2].key) && index != 0) {
+            T tmp = *heap[(index-1)/2].key;
+            *heap[(index-1)/2].key = *heap[index].key;
+            *heap[index].key = tmp;
             index = (index-1)/2;
         }
         return;
     }
     
-    while((heap[index].key > heap[(index-1)/2].key) && index != 0) {
-        T tmp = heap[(index-1)/2].key;
-        heap[(index-1)/2].key = heap[index].key;
-        heap[index].key = tmp;
+    while((*heap[index].key > *heap[(index-1)/2].key) && index != 0) {
+        T tmp = *heap[(index-1)/2].key;
+        *heap[(index-1)/2].key = *heap[index].key;
+        *heap[index].key = tmp;
         index = (index-1)/2;
     }
     return;
@@ -116,33 +116,33 @@ void Heap<T>::downHeap() {
     if(heap[1].isExternal && heap[2].isExternal) return;
 
     if(minimal) {
-        while((heap[index].key > heap[index*2+1].key || heap[index].key > heap[index*2+2].key) && !heap[index*2+1].isExternal) {
-            if(heap[index*2+2].isExternal || heap[index*2+1].key < heap[index*2+2].key) {
+        while((*heap[index].key > *heap[index*2+1].key || *heap[index].key > *heap[index*2+2].key) && !heap[index*2+1].isExternal) {
+            if(heap[index*2+2].isExternal || *heap[index*2+1].key < *heap[index*2+2].key) {
                 T tmp = heap[index].key;
-                heap[index].key = heap[index*2+1].key;
-                heap[index*2+1].key = tmp;
+                *heap[index].key = *heap[index*2+1].key;
+                *heap[index*2+1].key = tmp;
                 index = index*2+1;
             }
             else {
-                T tmp = heap[index].key;
-                heap[index].key = heap[index*2+2].key;
-                heap[index*2+2].key = tmp;
+                T tmp = *heap[index].key;
+                *heap[index].key = *heap[index*2+2].key;
+                *heap[index*2+2].key = tmp;
                 index = index*2+2;
             }
         }
         return;
     }
-    while((heap[index].key < heap[index*2+1].key || heap[index].key < heap[index*2+2].key) && !heap[index*2+1].isExternal) {
-        if(heap[index*2+2].isExternal || heap[index*2+1].key > heap[index*2+2].key) {
-            T tmp = heap[index].key;
-            heap[index].key = heap[index*2+1].key;
-            heap[index*2+1].key = tmp;
+    while((*heap[index].key < *heap[index*2+1].key || *heap[index].key < *heap[index*2+2].key) && !heap[index*2+1].isExternal) {
+        if(heap[index*2+2].isExternal || *heap[index*2+1].key > *heap[index*2+2].key) {
+            T tmp = *heap[index].key;
+            *heap[index].key = *heap[index*2+1].key;
+            *heap[index*2+1].key = tmp;
             index = index*2+1;
         }
         else {
-            T tmp = heap[index].key;
-            heap[index].key = heap[index*2+2].key;
-            heap[index*2+2].key = tmp;
+            T tmp = *heap[index].key;
+            *heap[index].key = *heap[index*2+2].key;
+            *heap[index*2+2].key = tmp;
             index = index*2+2;
         }
     }
@@ -177,7 +177,7 @@ template<class T>
 void Heap<T>::preorder(std::ostringstream *ss, short index) {
     if(index >= length) return; 
     
-    *ss << heap[index].key << ' ';
+    *ss << *heap[index].key << ' ';
     preorder(ss, index*2+1);
     preorder(ss, index*2+2);
 }
@@ -187,19 +187,19 @@ void Heap<T>::postorder(std::ostringstream *ss, short index) {
 
     postorder(ss, index*2+1);
     postorder(ss, index*2+2);
-    *ss << heap[index].key << ' ';
+    *ss << *heap[index].key << ' ';
 }
 template<class T>
 void Heap<T>::inorder(std::ostringstream *ss, short index) {
     if(index >= length) return;
 
     inorder(ss, index*2+1);
-    *ss << heap[index].key << ' ';
+    *ss << *heap[index].key << ' ';
     inorder(ss, index*2+2);
 }
 template<class T>
 void Heap<T>::breadth(std::ostringstream *ss, short index) {
     for(int i=index; i<size(); ++i) {
-        *ss << heap[i].key << ' ';
+        *ss << *heap[i].key << ' ';
     }
 }

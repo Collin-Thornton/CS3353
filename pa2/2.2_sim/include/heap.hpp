@@ -19,7 +19,7 @@ template<class T>
 class Heap {
     private:
         struct Node {
-            T key;
+            T *key;
 
             int pos = -1;
             bool isExternal = true;
@@ -48,7 +48,7 @@ class Heap {
         bool isEmpty();
         std::string toString(short traversal = BREADTH);
 
-        int insertNode(T key);
+        int insertNode(T *key);
         T pop();
 };
 
