@@ -3,9 +3,9 @@
 //   Author  -   Collin Thornton
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
-//   Assgn   -   PA 1
-//   Alg     -   Circular Queue
-//   Due     -   2-21-2020
+//   Assgn   -   PA 2
+//   Alg     -   Heap
+//   Due     -   3-06-2020
 //
 // ##########################################  
 
@@ -23,9 +23,9 @@ const string HEADER = R"(
 //   Author  -   Collin Thornton
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
-//   Assgn   -   PA 1
-//   Alg     -   Parenthesis Check
-//   Due     -   2-21-2020
+//   Assgn   -   PA 2
+//   Alg     -   Heap
+//   Due     -   3-06-2020
 //
 // ##########################################  
 )";
@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 
             result = heap.insertNode(key);
         }
-
+-
         cout << "Operation:\t"  << line << endl;
         cout << "Old Heap:\t"   << old_heap << endl;
         cout << "New Heap:\t"   << heap.toString(traversal) << endl << endl;
