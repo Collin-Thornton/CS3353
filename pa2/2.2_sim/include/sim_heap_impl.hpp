@@ -11,7 +11,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "heap.hpp"
+#include "sim_heap.hpp"
 
 template<class T>
 Heap<T>::Heap(bool minimal, bool allowDuplicates) {

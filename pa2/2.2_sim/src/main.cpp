@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "../include/heap.hpp"
+#include "../include/sim_heap.hpp"
 #include "../include/job.hpp"
 
 using namespace std;
@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     cout << "Please specify the name of the file containing operations" << endl;
     cout << "Filename: ";
     cin >> fname;
-    
+
 //    fname = "pa2/2.2_sim/test/test1.txt";
     
     ifstream file(fname);

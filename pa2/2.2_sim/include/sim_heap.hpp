@@ -53,6 +53,6 @@ class Heap {
         T* look();
 };
 
-#include "heap_impl.hpp"
+#include "sim_heap_impl.hpp"
 
 #endif
