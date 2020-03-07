@@ -39,7 +39,9 @@ template<class T>
 void Heap<T>::removeExternalLayer() {
     if(length > (int)pow(2, layers)-1) return;
 
-    std::cout << "Layer removed" << std::endl;
+    //std::cout << "ads;lfkja;lsdkjf" << std::endl;
+
+    //std::cout << "Layer removed" << std::endl;
     Node* tmp = new Node[(int)pow(2,layers)-1];
     for(int i=0; i<length; ++i) {
         tmp[i] = heap[i];
@@ -77,12 +79,14 @@ T Heap<T>::pop() {
     T key = *heap[0].key;
     *heap[0].key = *heap[length-1].key;
 
-    *heap[length-1].key = 0;
     heap[length-1].isExternal = true;
 
+    //std::cout << "downheap" << std::endl;
     downHeap();
+    //std::cout << "finished downheap" << std::endl;
     --length;
 
+    //std::cout << "about to return" << std::endl;
     return key;
 }
 template<class T>
@@ -111,14 +115,15 @@ void Heap<T>::upHeap() {
 template<class T>
 void Heap<T>::downHeap() {
     if(isEmpty() || size() == 1) return;
-    
+    //std::cout << "asdftesting" << std::endl;
     int index = 0;
     if(heap[1].isExternal && heap[2].isExternal) return;
 
     if(minimal) {
         while((*heap[index].key > *heap[index*2+1].key || *heap[index].key > *heap[index*2+2].key) && !heap[index*2+1].isExternal) {
+           // std::cout << "top" << std::endl;
             if(heap[index*2+2].isExternal || *heap[index*2+1].key < *heap[index*2+2].key) {
-                T tmp = heap[index].key;
+                T tmp = *heap[index].key;
                 *heap[index].key = *heap[index*2+1].key;
                 *heap[index*2+1].key = tmp;
                 index = index*2+1;
@@ -129,7 +134,13 @@ void Heap<T>::downHeap() {
                 *heap[index*2+2].key = tmp;
                 index = index*2+2;
             }
+           // std::cout << "mid" << std::endl;
+            //std::cout << "l: " << length << " i: " << index << std::endl;
+            if(index*4+1 > length) return;
+            if(index*4+2 > length) return;
+           // std::cout << "bottom" << std::endl;
         }
+       // std::cout << "exiting downheap" << std::endl;
         return;
     }
     while((*heap[index].key < *heap[index*2+1].key || *heap[index].key < *heap[index*2+2].key) && !heap[index*2+1].isExternal) {

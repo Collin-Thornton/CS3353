@@ -17,12 +17,12 @@
 template<class T>
 class Heap {
     private:
-        struct Job {
+        struct Node {
             T key;
 
             int pos = -1;
             bool isExternal = true;
-        }; Job* heap;
+        }; Node* heap;
 
         bool minimal, allowDuplicates;
 
@@ -47,7 +47,7 @@ class Heap {
         bool isEmpty();
         std::string toString(short traversal = BREADTH);
 
-        int insertJob(T key);
+        int insertNode(T key);
         T pop();
 };
 

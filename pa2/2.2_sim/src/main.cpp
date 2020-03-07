@@ -49,8 +49,8 @@ int main(int argc, char** argv) {
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
 
     string line;
-    Heap<Job> arrivalHeap = Heap<Job>(true, true);
-    Heap<Job> priorityHeap = Heap<Job>(true, true);
+    Heap<Job> queuedHeap = Heap<Job>(true, true);
+    Heap<Job> execHeap = Heap<Job>(true, true);
 
     int i = 0;
     while(getline(file, line, '\n')) {
@@ -58,11 +58,34 @@ int main(int argc, char** argv) {
         int priority, arrivalTime, length;
         getJob(line, name, priority, arrivalTime, length);
         Job *jobCompArriv = new Job(name, priority, arrivalTime, length, true);
-        Job *jobCompPrior = new Job(name, priority, arrivalTime, length, false);
+        //Job *jobCompPrior = new Job(name, priority, arrivalTime, length, false);
 
-        arrivalHeap.insertNode(jobCompArriv);
-        priorityHeap.insertNode(jobCompPrior);
-        cout << endl << "ARRIVAL HEAP:\n" << arrivalHeap.toString() << endl;
+        queuedHeap.insertNode(jobCompArriv);
+    }
+
+    //cout << "Queued Jobs:\n" << queuedHeap.toString() << endl;
+
+
+    int t = 0;
+    while(!queuedHeap.isEmpty()) {
+        //cout << "GOODBYE" << endl;
+        cout << "----------------------------" << endl;
+        cout << "TIMESTEP:\t" << t << endl << endl;
+
+        cout << "Queued Jobs:\n" << queuedHeap.toString() << endl << endl;
+        cout << "Executing Jobs:\n" << execHeap.toString() << endl << endl;
+
+        Job nextJob = queuedHeap.pop();
+
+        while(nextJob.getArrival() == t) {
+            Job *jobExec = new Job (nextJob.getId(), nextJob.getPriority(), nextJob.getArrival(), nextJob.getLength(), false);
+            execHeap.insertNode(jobExec);
+            nextJob = queuedHeap.pop();
+        }
+        
+        for(t=t;t<nextJob.getArrival();++t) {
+            cout << "EXECUTING @ TIMESTEP:\t" << t << endl;
+        }
     }
 
     return 0;
