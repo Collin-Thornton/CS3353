@@ -42,8 +42,9 @@ int main(int argc, char** argv) {
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
     cout << "Filename: ";
-    //cin >> fname;
-    fname = "../test/test1.txt";
+    cin >> fname;
+    
+//    fname = "pa2/2.2_sim/test/test1.txt";
     
     ifstream file(fname);
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
@@ -58,36 +59,58 @@ int main(int argc, char** argv) {
         int priority, arrivalTime, length;
         getJob(line, name, priority, arrivalTime, length);
         Job *jobCompArriv = new Job(name, priority, arrivalTime, length, true);
-        //Job *jobCompPrior = new Job(name, priority, arrivalTime, length, false);
 
         queuedHeap.insertNode(jobCompArriv);
     }
 
-    //cout << "Queued Jobs:\n" << queuedHeap.toString() << endl;
+    cout << queuedHeap.toString();
+    long t = 0;
 
-
-    int t = 0;
+    cout << endl << endl << 't';
     while(!queuedHeap.isEmpty()) {
-        //cout << "GOODBYE" << endl;
-        cout << "----------------------------" << endl;
-        cout << "TIMESTEP:\t" << t << endl << endl;
+      
+        cout << "Time Slice #" << t;
 
-        cout << "Queued Jobs:\n" << queuedHeap.toString() << endl << endl;
-        cout << "Executing Jobs:\n" << execHeap.toString() << endl << endl;
-
-        Job nextJob = queuedHeap.pop();
-
-        while(nextJob.getArrival() == t) {
+        bool first = true;
+        while(queuedHeap.look()->getArrival() == t) {
+            Job nextJob = queuedHeap.pop();
             Job *jobExec = new Job (nextJob.getId(), nextJob.getPriority(), nextJob.getArrival(), nextJob.getLength(), false);
+            if(first) cout << "\t - " << nextJob.getId() << " arrived" << endl;
+            else      cout << "\t\t - " << nextJob.getId() << " arrived" << endl;
+            first = false;
             execHeap.insertNode(jobExec);
-            nextJob = queuedHeap.pop();
+            if(queuedHeap.isEmpty()) break;
         }
-        
-        for(t=t;t<nextJob.getArrival();++t) {
-            cout << "EXECUTING @ TIMESTEP:\t" << t << endl;
+        string str = queuedHeap.toString();
+
+        first = true;
+        if(!queuedHeap.isEmpty()) {
+            for(t=t;t<queuedHeap.look()->getArrival();++t) {
+                if(!first) cout << "Time Slice #" << t << "\t" << " - ";
+                else cout << "\t\t - ";
+                first = false;
+                cout << "Executing " << execHeap.look()->toString();
+                execHeap.look()->work();
+                if(execHeap.look()->isFinished()) {
+                    Job finished = execHeap.pop();
+                }
+            }
+        }
+        else {
+            while(!execHeap.isEmpty()) {
+                cout << "Time Slice #" << t << "\t" << " - ";
+                cout << "Executing " << execHeap.look()->toString();
+
+                execHeap.look()->work();
+                if(execHeap.look()->isFinished()) {
+                    Job finished = execHeap.pop();             
+                }
+                ++t;
+            }
         }
     }
 
+    cout << endl << "FINISHED" << endl;
     return 0;
 }
 

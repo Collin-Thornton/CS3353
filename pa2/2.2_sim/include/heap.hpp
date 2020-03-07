@@ -41,7 +41,7 @@ class Heap {
     public:
         Heap(bool minimal = false, bool allowDuplicates = true);
         ~Heap();
-        int length=0, layers=0, insertPoint=0;
+        int length=0, layers=0;
 
 
         int size();
@@ -50,6 +50,7 @@ class Heap {
 
         int insertNode(T *key);
         T pop();
+        T* look();
 };
 
 #include "heap_impl.hpp"

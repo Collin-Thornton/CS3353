@@ -15,22 +15,27 @@ class Job {
 
     public:
         bool operator == (Job const &obj) {
+            if(&obj == nullptr) return true;
             if (!compareArrivalTime) return (priority == obj.priority);
             else return (arrival_time == obj.arrival_time);
         }
         bool operator >= (Job const &obj) {
+            if(&obj == nullptr) return true;
             if (!compareArrivalTime) return (priority >= obj.priority);
             else return (arrival_time >= obj.arrival_time);
         }
         bool operator <= (Job const &obj) {
+            if(&obj == nullptr) return true;
             if (!compareArrivalTime) return (priority <= obj.priority);
             else return (arrival_time <= obj.arrival_time);
         }
         bool operator < (Job const &obj) {
+            if(&obj == nullptr) return true;
             if (!compareArrivalTime) return (priority < obj.priority);
             else return (arrival_time < obj.arrival_time);
         }
         bool operator > (Job const &obj) {
+            if(&obj == nullptr) return true;
             if (!compareArrivalTime) return (priority > obj.priority);
             else return (arrival_time > obj.arrival_time);
         }
