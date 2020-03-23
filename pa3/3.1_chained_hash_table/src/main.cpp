@@ -51,10 +51,8 @@ int main(int argc, char** argv) {
     getline(file, line, ' ');
 
     short size;
-	int index = line.find(' ');
-	string sub = line.substr(0, index);
 	try {
-		size =stoi(sub);
+		size =stoi(line);
 	} catch(exception e) {
 		cout << "Please inter an integer for size." << endl << "Exiting." << endl;
 		exit(0);
@@ -62,14 +60,12 @@ int main(int argc, char** argv) {
 
 	HashTable table = HashTable(size);
 
-	int prevIndex = index;
-	while(index != line.length()) {
-		string old_table = table.toString();
+	while(getline(file, line, ' ')) {
+        string old_table = table.toString();
 
-		int index= line.find(' ', prevIndex);
-		string sub = line.substr(prevIndex, index-prevIndex);
+        int result;
 
-		string k = sub.substr(0, sub.find_first_of('.'));
+		string k = line.substr(0, line.find_first_of('.'));
 		int key;
 		try {
 			key = stoi(k);
@@ -79,18 +75,16 @@ int main(int argc, char** argv) {
 		}
 
 		int result;
-		string cmd = sub.substr(sub.find_first_of('.'));
+		string cmd = line.substr(line.find_first_of('.'));
 		if(cmd == "del") result = table.remove(key);
 		else if(cmd == "in") result = table.insert(key);
 		else {
-			cout << "Command: " << sub << " unrecognized." << endl << "Exiting." << endl;
+			cout << "Command: " << line << " unrecognized." << endl << "Exiting." << endl;
 			exit(0);
 		}
 
-		cout << "Operation:\t"  << sub << endl;
+        cout << "Operation:\t"  << line << endl;
         cout << "Old Table:\t"   << old_table << endl;
-        cout << "New Heap:\t"   << table.toString() << endl << endl;
-
-	}
+        cout << "New Table:\t"   << table.toString() << endl << endl;
 
 }
