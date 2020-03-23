@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 
     table.insert(3);
 
-    for(int i=0; i<50; ++i) {
+    for(int i=0; i<15; ++i) {
 	    cout << "Operation: " << i << ".in\t" << endl;
 	    cout << "Table before operation:" << endl;
 	    cout << table.toString();
@@ -47,5 +47,7 @@ int main(int argc, char** argv) {
 	    cout << table.toString();
     	    cout << endl << endl;
     }
+    cout << "Operation: del(13)\t" << endl;
+    int result = table.remove(13);
     cout << table.toString();
 }

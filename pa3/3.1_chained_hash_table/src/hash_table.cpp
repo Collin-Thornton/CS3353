@@ -33,7 +33,7 @@ int HashTable::remove(int key) {
     
     table[index].del(key);
     --s;
-    return 0; 
+    return s; 
 }
 bool HashTable::sch(int key) {
     if(s == 0) return false;
