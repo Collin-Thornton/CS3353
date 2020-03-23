@@ -41,9 +41,9 @@ int main(int argc, char** argv) {
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
     cout << "Filename: ";
-    cin >> fname;
+    //cin >> fname;
 
-    //fname = "../test/test1.txt";
+    fname = "../test/test1.txt";
     ifstream file(fname);
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
 
@@ -61,9 +61,9 @@ int main(int argc, char** argv) {
 	HashTable table = HashTable(size);
 
 	while(getline(file, line, ' ')) {
-        string old_table = table.toString();
+	        string old_table = table.toString();
 
-        int result;
+        	int result;
 
 		string k = line.substr(0, line.find_first_of('.'));
 		int key;
@@ -74,17 +74,16 @@ int main(int argc, char** argv) {
 			exit(0);
 		}
 
-		int result;
-		string cmd = line.substr(line.find_first_of('.'));
-		if(cmd == "del") result = table.remove(key);
-		else if(cmd == "in") result = table.insert(key);
+		string cmd = line.substr(line.find_first_of('.')+1);
+		if(cmd.find("del") != cmd.npos) result = table.remove(key);
+		else if(cmd.find("in") != cmd.npos) result = table.insert(key);
 		else {
 			cout << "Command: " << line << " unrecognized." << endl << "Exiting." << endl;
 			exit(0);
 		}
-
-        cout << "Operation:\t"  << line << endl;
-        cout << "Old Table:\t"   << old_table << endl;
-        cout << "New Table:\t"   << table.toString() << endl << endl;
-
+	
+      	 	cout << "Operation:\t"  << line << endl;
+       		cout << "Old Table:\n"   << old_table << endl;
+        	cout << "New Table:\n"   << table.toString() << endl << endl;
+	}
 }
