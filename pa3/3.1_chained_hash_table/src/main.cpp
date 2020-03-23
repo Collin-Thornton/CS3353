@@ -35,6 +35,17 @@ using namespace std;
 int main(int argc, char** argv) {
     HashTable table(13);
 
-    table.insert(2);
+    table.insert(3);
+
+    for(int i=0; i<50; ++i) {
+	    cout << "Operation: " << i << ".in\t" << endl;
+	    cout << "Table before operation:" << endl;
+	    cout << table.toString();
+	    int result = table.insert(i);
+	    if(result == -1) cout << "DUPLICATE RESULT" << endl;
+	    cout << "Table after operation:" << endl;
+	    cout << table.toString();
+    	    cout << endl << endl;
+    }
     cout << table.toString();
 }

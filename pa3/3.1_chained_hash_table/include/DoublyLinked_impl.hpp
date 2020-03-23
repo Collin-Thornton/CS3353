@@ -65,7 +65,7 @@ int DoublyLinked<T>::append(T key) {
     tmp->next = create_node(key, NULL, tmp);
     TAIL = tmp->next;
 
-    return 1;
+    return 0;
 }
 template<class T>
 int DoublyLinked<T>::insert(T key, int prev_key) {
@@ -84,7 +84,7 @@ int DoublyLinked<T>::insert(T key, int prev_key) {
     tmp = tmp->next;
     tmp->prev = prev;
 
-    return true;
+    return 0;
 }
 template<class T>
 int DoublyLinked<T>::insert(T key) {
