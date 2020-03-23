@@ -27,7 +27,7 @@ int HashTable::remove(int key) {
 
     int index = key % length;
 
-    if(table[index].getSize == 0) return 2;
+    if(table[index].getSize() == 0) return 2;
     if(!table[index].srch(key)) return 2;
     
     table[index].del(key);
