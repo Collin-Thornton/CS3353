@@ -4,7 +4,7 @@
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 3
-//   Alg     -   Hash Table w/ Chaining
+//   Alg     -   Hash Table w/ Linear Probing
 //   Due     -   3-23-2020
 //
 // ##########################################  
@@ -24,7 +24,7 @@ const string HEADER = R"(
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 3
-//   Alg     -   Hash Table w/ Chaining
+//   Alg     -   Hash Table w/ Linear Probing
 //   Due     -   3-23-2020
 //
 // ##########################################  

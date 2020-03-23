@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "DoublyLinked.hpp"
-
 class HashTable {
     private:
         struct Bucket {

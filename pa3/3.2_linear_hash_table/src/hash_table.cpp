@@ -21,6 +21,8 @@ int HashTable::insert(int key) {
     if(s == length) return -2;
     if(!table[index].full) {
         table[index].key = key;
+	table[index].full = true;
+	++s;
         return index;
     }
 
@@ -28,7 +30,8 @@ int HashTable::insert(int key) {
     while(i != index) {
         if(!table[i].full) {
             table[i].key = key;
-            ++s;
+            table[i].full = true;
+	    ++s;
             return i;
         }
         i = (++i) % length;
@@ -41,7 +44,10 @@ int HashTable::remove(int key) {
     int index = key % length;
 
     if(!table[index].full) return -2;
-
+    if(table[index].key == key) {
+	table[index].full = false;
+	return --s;
+    }
     int i = (index+1) % length;
     while(i != index && !table[i].full) {
         if(table[i].key == key) {
@@ -57,6 +63,10 @@ bool HashTable::sch(int key) {
     if(s == 0) return false;
 
     int index = key % length;
+
+    if(!table[index].full) return -2;
+    if(table[index].key == key) return true;
+
     int i = (index+1) % length;
     while(i != index && !table[i].full) {
         if(table[i].key == key) return true;
