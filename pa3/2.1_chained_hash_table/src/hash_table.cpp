@@ -9,7 +9,7 @@ HashTable::HashTable(int length) {
     for(int i=0; i<length; ++i) {
         table[i] = DoublyLinked<int>(false);
     }
-    this->size = 0;
+    s = 0;
 }
 HashTable::~HashTable() {
     delete table;
@@ -19,11 +19,11 @@ int HashTable::insert(int key) {
     int index = key % length;
 
     table[index].append(key);
-    ++this->size;
+    ++s;
     return index;
 }
 int HashTable::remove(int key) {
-    if(this->size == 0) return 1;
+    if(s == 0) return 1;
 
     int index = key % length;
 
@@ -31,18 +31,18 @@ int HashTable::remove(int key) {
     if(!table[index].srch(key)) return 2;
     
     table[index].del(key);
-    --this->size;
+    --s;
     return 0; 
 }
 bool HashTable::sch(int key) {
-    if(this->size == 0) return false;
+    if(s == 0) return false;
 
     int index = key % length;
     if(table[index].srch(key)) return true;
     return false;
 }
 int HashTable::size() {
-    return this->size;
+    return s;
 }
 std::string HashTable::toString() {
     std::ostringstream ss;
