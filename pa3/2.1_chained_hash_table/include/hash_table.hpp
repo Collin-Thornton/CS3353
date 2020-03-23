@@ -8,7 +8,7 @@
 class HashTable {
     private:
         DoublyLinked<int>* table;
-        int size, length;
+        int s, length;
 
     public:
         HashTable(int length);
