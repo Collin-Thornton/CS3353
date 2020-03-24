@@ -4,7 +4,7 @@
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 3
-//   Alg     -   Hash Table w/ Linear Probing
+//   Alg     -   Hash Table w/ Double Hashing
 //   Due     -   3-23-2020
 //
 // ##########################################  
@@ -13,7 +13,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "../include/hash_table.hpp"
+#include "../include/double_hash_table.hpp"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ const string HEADER = R"(
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 3
-//   Alg     -   Hash Table w/ Linear Probing
+//   Alg     -   Hash Table w/ Double Hashing
 //   Due     -   3-23-2020
 //
 // ##########################################  
@@ -41,9 +41,9 @@ int main(int argc, char** argv) {
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
     cout << "Filename: ";
-    //cin >> fname;
+    cin >> fname;
 
-    fname = "../test/test1.txt";
+    //fname = "../test/test1.txt";
     ifstream file(fname);
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
 
@@ -58,12 +58,21 @@ int main(int argc, char** argv) {
 		exit(0);
 	}
 
-	HashTable table = HashTable(size);
+    getline(file, line, ' ');
+    short q;
+	try {
+		q =stoi(line);
+	} catch(exception e) {
+		cout << "Please inter an integer for q." << endl << "Exiting." << endl;
+		exit(0);
+	}	
 
-	while(getline(file, line, ' ')) {
-	        string old_table = table.toString();
+	HashTable table = HashTable(size, q);
 
-        	int result;
+	while(getline(file, line, ' ') && table.size() < size) {
+		string old_table = table.toString();
+
+		int result;
 
 		string k = line.substr(0, line.find_first_of('.'));
 		int key;
@@ -75,15 +84,25 @@ int main(int argc, char** argv) {
 		}
 
 		string cmd = line.substr(line.find_first_of('.')+1);
-		if(cmd.find("del") != cmd.npos) result = table.remove(key);
-		else if(cmd.find("in") != cmd.npos) result = table.insert(key);
+		
+		bool search = false;
+		if(cmd.find("del") != cmd.npos) 		result = table.remove(key);
+		else if(cmd.find("in") != cmd.npos) 	result = table.insert(key);
+		else if(cmd.find("sch") != cmd.npos) 	{ result = table.sch(key); search = true; }
 		else {
 			cout << "Command: " << line << " unrecognized." << endl << "Exiting." << endl;
 			exit(0);
 		}
 	
       	 	cout << "Operation:\t"  << line << endl;
+
+			if(search == true && result == -3) cout << "NOT FOUND" << endl;
+			else if(search == true && result != -3) cout << "FOUND" << endl;
+
        		cout << "Old Table:\n"   << old_table << endl;
         	cout << "New Table:\n"   << table.toString() << endl << endl;
 	}
+
+	if(table.size() >= size) cout << "TABLE FULL" << endl;
+	cout << "FINISHED" << endl;	
 }

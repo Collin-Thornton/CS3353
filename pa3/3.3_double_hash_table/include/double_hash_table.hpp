@@ -11,16 +11,16 @@ class HashTable {
         };
 
         Bucket* table;
-        int s, length;
+        int s, length, q;
 
     public:
-        HashTable(int length);
+        HashTable(int length, int q);
         ~HashTable();
 
         int insert(int key);
         int remove(int key);
 
-        bool sch(int key);
+        int sch(int key);
         int size();
 
         std::string toString();

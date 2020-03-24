@@ -4,7 +4,7 @@
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 3
-//   Alg     -   Hash Table w/ Linear Probing
+//   Alg     -   Hash Table w/ Chaining
 //   Due     -   3-23-2020
 //
 // ##########################################  
@@ -13,7 +13,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "../include/hash_table.hpp"
+#include "../include/chained_hash_table.hpp"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ const string HEADER = R"(
 //   Email   -   collin.thornton@okstate.edu
 //   Class   -   CS 3353
 //   Assgn   -   PA 3
-//   Alg     -   Hash Table w/ Linear Probing
+//   Alg     -   Hash Table w/ Chaining
 //   Due     -   3-23-2020
 //
 // ##########################################  
@@ -41,9 +41,9 @@ int main(int argc, char** argv) {
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
     cout << "Filename: ";
-    //cin >> fname;
+    cin >> fname;
 
-    fname = "../test/test1.txt";
+    //fname = "../test/test1.txt";
     ifstream file(fname);
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
 
@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
 
 	HashTable table = HashTable(size);
 
-	while(getline(file, line, ' ')) {
+	while(getline(file, line, ' ') && table.size() < size) {
 	        string old_table = table.toString();
 
         	int result;
@@ -86,4 +86,7 @@ int main(int argc, char** argv) {
        		cout << "Old Table:\n"   << old_table << endl;
         	cout << "New Table:\n"   << table.toString() << endl << endl;
 	}
+
+	if(table.size() == size) cout << "TABLE FULL" << endl;
+	cout << "FINISHED" << endl;
 }

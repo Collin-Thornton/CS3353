@@ -1,7 +1,7 @@
 
 #include <sstream>
 
-#include "../include/hash_table.hpp"
+#include "../include/linear_hash_table.hpp"
 
 HashTable::HashTable(int length) {
     this->length = length;

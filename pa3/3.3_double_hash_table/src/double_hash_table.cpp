@@ -1,15 +1,16 @@
 
 #include <sstream>
 
-#include "../include/hash_table.hpp"
+#include "../include/double_hash_table.hpp"
 
-HashTable::HashTable(int length) {
+HashTable::HashTable(int length, int q) {
     this->length = length;
     table = new Bucket[length];
     for(int i=0; i<length; ++i) {
         table[i].full = false;
     }
     s = 0;
+    this->q = q;
 }
 HashTable::~HashTable() {
     //delete table;
@@ -19,22 +20,26 @@ int HashTable::insert(int key) {
     int index = key % length;
 
     if(s == length) return -2;
+
     if(!table[index].full) {
         table[index].key = key;
-	table[index].full = true;
-	++s;
+	    table[index].full = true;
+	    ++s;
         return index;
     }
 
-    int i = (index+1) % length;
-    while(i != index) {
+    int j = 1;
+    int i = (index+j*(q-key%q)) % length;
+
+    while(i != index && j < s) {
         if(!table[i].full) {
             table[i].key = key;
             table[i].full = true;
-	    ++s;
+	        ++s;
             return i;
         }
-        i = (++i) % length;
+        ++j;
+        i = (index+j*(q-key%q)) % length;
     }
     return -2;
 }
@@ -45,35 +50,42 @@ int HashTable::remove(int key) {
 
     if(!table[index].full) return -2;
     if(table[index].key == key) {
-	table[index].full = false;
-	return --s;
+	    table[index].full = false;
+	    return --s;
     }
-    int i = (index+1) % length;
-    while(i != index && !table[i].full) {
+
+    int j = 1;
+    int i = (index+j*(q-key%q)) % length;
+
+    while(i != index && j < s) {
         if(table[i].key == key) {
             table[i].full = false;
             return --s;
         }
-        i = (++i) % length;
+        ++j;
+        i = (index+j*(q-key%q)) % length;
     }    
 
     return -1; 
 }
-bool HashTable::sch(int key) {
+int HashTable::sch(int key) {
     if(s == 0) return false;
 
     int index = key % length;
 
-    if(!table[index].full) return -2;
-    if(table[index].key == key) return true;
+    if(!table[index].full) return -3;
+    if(table[index].key == key) return 0;
 
-    int i = (index+1) % length;
-    while(i != index && !table[i].full) {
-        if(table[i].key == key) return true;
-        i = (++i) % length;
+    int j = 1;
+    int i = (index+j*(q-key%q)) % length;
+
+    while(i != index && j < s) {
+        if(table[i].key == key) return 0;
+        ++j;
+        i = (index+j*(q-key%q)) % length;
     }    
 
-    return false; 
+    return -3; 
 }
 int HashTable::size() {
     return s;
