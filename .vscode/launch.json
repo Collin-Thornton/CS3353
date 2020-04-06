@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/media/storage/college/classes/CS3353/pa2/2.2_sim/src/main",
+            "program": "/media/storage/college/classes/CS3353/pa4/4.1_rbtree/src/main",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
