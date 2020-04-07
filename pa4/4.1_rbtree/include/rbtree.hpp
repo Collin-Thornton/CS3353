@@ -14,13 +14,14 @@
 
 #define RED 10
 #define BLACK 11
+#define DOUBLEBLACK 12
 
 #define PREORDER 0
 #define INORDER 1
 #define POSTORDER 2
 
 #define DUPLICATE -1
-
+#define NOTFOUND -2
 
 template <class T>
 class RBTree {
@@ -36,37 +37,37 @@ class RBTree {
             Node *rchild = nullptr;
         };    
 
-        RBTree(int traversal = INORDER, bool allow_duplicates = false); // done
-        ~RBTree();                                                      // done
+        RBTree(int traversal = INORDER, bool allow_duplicates = false); 
+        ~RBTree();                                                      
 
-        bool srch(int key);                                             // done
+        bool srch(int key);                                             
 
-        int insert(int key, T* data = nullptr);                         // done
-        //T remove(int key);                                              // TODO
+        int insert(int key, T* data = nullptr);                         
+        int remove(int key, T* output = nullptr);                       
 
-        int size();                                                     // done
-        bool isEmpty();                                                 // done
-        std::string toString(int trav = -2);                            // done
+        int size();                                                     
+        bool isEmpty();                                                 
+        std::string toString(int trav = -2);                            
 
     private:
         Node *root;
 
-        bool checkDoubleRed(Node* node);                                // done
+        bool checkDoubleRed(Node* node);                                
 
-        void fixDoubleRed(Node* node);                                  // done
-        void restructure(Node* node);                                   // done
-        void recolor(Node* node);                                       // done
+        void fixDoubleRed(Node* node);                                  
+        void restructure(Node* node);                                   
+        void recolor(Node* node);                                       
 
-        //bool checkDoubleBlack(Node* node);                              // TODO
+        void fixDoubleBlack(Node* node);                                
+        
+        void deleteTree(Node* node);                                    
+        void makeExternal(Node* node);                                  
 
-        //void fixDoubleBlack(Node* node);                                // TODO
-
-        void deleteTree(Node* node);                                    // done
-
-        void inorder(std::ostringstream* ss, Node* node);               // done
-        void preorder(std::ostringstream* ss, Node* node);              // done
-        void postorder(std::ostringstream* ss, Node* node);             // done
-        Node* getSibling(Node* node);                                   // done
+        void inorder(std::ostringstream &ss, Node* node);               
+        void preorder(std::ostringstream &ss, Node* node);              
+        void postorder(std::ostringstream &ss, Node* node);             
+        Node* getSibling(Node* node);                                   
+        
 
         bool allow_duplicates = false;
         int l, traversal;

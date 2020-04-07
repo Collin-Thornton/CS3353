@@ -40,70 +40,74 @@ int main(int argc, char** argv) {
 
     if(argc > 1) cout << "There are no command line arguments" << endl;
 
-    RBTree<int> tree = RBTree<int>(INORDER);
-
-    tree.insert(56);
-    tree.insert(23);
-    tree.insert(45);
-    tree.insert(7);
-    tree.insert(5);
-
-    cout << tree.toString() << endl;
-/*    
-    for(int i=0; i<10; ++i) {
-        string before = tree.toString();
-        tree.insert(i);
-
-        cout << "Operation:\t" << i << ".in" << endl;
-        cout << "Tree before:\t" << before << endl;
-        cout << "Tree after:\t" << tree.toString() << endl << endl;
-    }
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
     string fname;
     cout << "Please specify the name of the file containing operations" << endl;
     cout << "Filename: ";
     cin >> fname;
 
-//    fname = "pa2/2.2_sim/test/test1.txt";
+//    fname = "../test/test1.txt";
+    cout << endl << endl << endl;
     
     ifstream file(fname);
     if(!file.is_open()) throw invalid_argument("FILE NOT FOUND");
 
     string line;
-    Heap<Job> queuedHeap = Heap<Job>(true, true);
-    Heap<Job> execHeap = Heap<Job>(true, true);
+    int traversal;
+
+    getline(file, line, ' ');
+    if(line == "in") traversal = INORDER;
+    else if(line == "post") traversal = POSTORDER;
+    else if(line == "pre") traversal = PREORDER;
+    else {
+        cout << "Please enter a valid traversal method as the first command." << endl;
+        cout << "Valid traversal methods: 'in', 'pre', 'post'" << endl;
+        cout << "Exiting." << endl;
+        exit(0);
+    }
+
+    RBTree<int> tree = RBTree<int>(traversal);
 
     int i = 0;
-    while(getline(file, line, '\n')) {
-        string name;
-        int priority, arrivalTime, length;
-        getJob(line, name, priority, arrivalTime, length);
-        Job *jobCompArriv = new Job(name, priority, arrivalTime, length, true);
+    while(getline(file, line, ' ')) {
+        string before = tree.toString();
 
-        queuedHeap.insertNode(jobCompArriv);
+        string k, cmd;
+        int key;
+        
+        int delim = line.find('.');
+        if(delim == line.npos) {
+            cout << "Command unrecognized: " << line << endl;
+            cout << "Exiting." << endl;
+            exit(1);
+        }
+        k = line.substr(0, delim);
+        cmd = line.substr(delim+1);
+
+        try {
+            key = stoi(k);
+        } catch(exception e) {
+            cout << "Error converting key to int on command: " << line << endl;
+            cout << "Exiting." << endl;
+            exit(1);
+        }
+
+        int result;
+        if(cmd == "in") result = tree.insert(key);
+        else if(cmd == "del") result = tree.remove(key);
+        else if(cmd == "srch") result = tree.srch(key);
+        else {
+            cout << "Subcommand (" << cmd << ") not recognized: " << line << endl;
+            cout << "Exiting." << endl;
+            exit(1);
+        }
+
+        if(result == DUPLICATE) cout << "Insert: (" << key << ") is duplicate. Skipping." << endl;
+        else if(result == NOTFOUND) cout << "Entry: (" << key << ") not found. Skipping." << endl;
+
+        cout << "Operation:\t"      << line << endl;
+        cout << "Tree Before:\t"    << before << endl;
+        cout << "Tree After:\t"     << tree.toString() << endl << endl;
     }
-*/
-    
 
     cout << endl << "FINISHED" << endl;
     return 0;
