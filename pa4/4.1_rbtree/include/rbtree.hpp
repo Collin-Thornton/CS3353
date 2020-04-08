@@ -55,13 +55,14 @@ class RBTree {
         bool checkDoubleRed(Node* node);                                
 
         void fixDoubleRed(Node* node);                                  
-        void restructure(Node* node);                                   
+        void restructure(Node* node, Node* grandchild = nullptr);                                   
         void recolor(Node* node);                                       
 
         void fixDoubleBlack(Node* node);                                
         
         void deleteTree(Node* node);                                    
-        void makeExternal(Node* node);                                  
+        void makeExternal(Node* node);
+        void replaceRoot(Node* node);                                  
 
         void inorder(std::ostringstream &ss, Node* node);               
         void preorder(std::ostringstream &ss, Node* node);              

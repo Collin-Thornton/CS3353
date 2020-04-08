@@ -95,7 +95,7 @@ void RBTree<T>::fixDoubleRed(Node* node) {
         }
         else {
             recolor(tmp->parent);
-            tmp = tmp->parent;
+            tmp = tmp->parent->parent;
         }
     }
 }
@@ -108,40 +108,47 @@ struct RBTree<T>::Node* RBTree<T>::getSibling(Node* node) {
     return (tmp->lchild == node) ? tmp->rchild : tmp->lchild;
 }
 template<class T>
-void RBTree<T>::restructure(Node* node) {
+void RBTree<T>::restructure(Node* node, Node* grandchild) {
     Node* parent = node->parent;
     Node* grandparent = node->parent->parent;
 
     if(node == parent->rchild && parent == grandparent->rchild) {
-        if(grandparent == root) root = parent;
+        if(grandparent == root) replaceRoot(parent);
         else (grandparent->parent->lchild == grandparent) ? grandparent->parent->lchild = parent : grandparent->parent->rchild = parent;
         parent->parent = grandparent->parent;
         grandparent->parent = parent;
         grandparent->rchild = parent->lchild;
+        grandparent->lchild->parent = grandparent;
+        parent->lchild->parent = grandparent;
         parent->lchild = grandparent;
         parent->color = BLACK;
         grandparent->color = RED;
         node->color = RED;
     }
     else if(node == parent->lchild && parent == grandparent->lchild) {
-        if(grandparent == root) root = parent;
+        if(grandparent == root) replaceRoot(parent);
         else (grandparent->parent->lchild == grandparent) ? grandparent->parent->lchild = parent : grandparent->parent->rchild = parent;
         parent->parent = grandparent->parent;
         grandparent->parent = parent;
         grandparent->lchild = parent->rchild;
+        grandparent->rchild->parent = grandparent;
+        parent->rchild->parent = grandparent;
         parent->rchild = grandparent;
         parent->color = BLACK;
         grandparent->color = RED;
         node->color = RED;
     }
     else if(node == parent->lchild && parent == grandparent->rchild) {
-        if(grandparent == root) root = node;
+        if(grandparent == root) replaceRoot(node);
         else (grandparent->parent->lchild == grandparent) ? grandparent->parent->lchild = node : grandparent->parent->rchild = node;
         node->parent = grandparent->parent;
         parent->parent = node;
         grandparent->parent = node;
         grandparent->rchild = node->lchild;
+        grandparent->lchild->parent = grandparent;
+        node->lchild->parent = grandparent;
         parent->lchild = node->rchild;
+        node->rchild->parent = parent;
         node->lchild = grandparent;
         node->rchild = parent;
         node->color = BLACK;
@@ -149,13 +156,16 @@ void RBTree<T>::restructure(Node* node) {
         grandparent->color = RED;
     }
     else {
-        if(grandparent == root) root = node;
+        if(grandparent == root) replaceRoot(node);
         else (grandparent->parent->lchild == grandparent) ? grandparent->parent->lchild = node : grandparent->parent->rchild = node;
         node->parent = grandparent->parent;
         parent->parent = node;
         grandparent->parent = node;
         grandparent->lchild = node->rchild;
+        grandparent->rchild->parent = grandparent;
+        node->rchild->parent = grandparent;
         parent->rchild = node->lchild;
+        node->lchild->parent = parent;
         node->lchild = parent; 
         node->rchild = grandparent;
         node->color = BLACK;
@@ -167,7 +177,6 @@ void RBTree<T>::restructure(Node* node) {
 template<class T>
 void RBTree<T>::recolor(Node* node) {
     node->color = BLACK;
-    //if(node == root) return;
     getSibling(node)->color = BLACK;
     
     node->parent->color = (node->parent == root) ? BLACK : RED;
@@ -183,18 +192,18 @@ int RBTree<T>::remove(int key, T* output) {
     while(v->key != key && !v->isExternal) v = (key < v->key) ? v->lchild : v->rchild;
 
     if(!v->lchild->isExternal && !v->rchild->isExternal) {
-        Node *successor = v->rchild;
-        while(!successor->lchild->isExternal) successor = successor->lchild;
+        Node *predecessor = v->lchild;
+        while(!predecessor->rchild->isExternal) predecessor = predecessor->rchild;
 
         T *Tmp = v->data;
-        v->data = successor->data;
-        successor->data = Tmp;
+        v->data = predecessor->data;
+        predecessor->data = Tmp;
 
         int tmp = v->key;
-        v->key = successor->key;
-        successor->key = tmp;
+        v->key = predecessor->key;
+        predecessor->key = tmp;
 
-        v = successor;
+        v = predecessor;
     }
 
     output = v->data;
@@ -217,7 +226,7 @@ int RBTree<T>::remove(int key, T* output) {
         }
         else {
             vColor = BLACK;
-            root = v->lchild;
+            replaceRoot(v->lchild);
         }
         v->lchild->color = vColor;
         u = v->lchild;
@@ -232,7 +241,7 @@ int RBTree<T>::remove(int key, T* output) {
         }
         else {
             vColor = BLACK;
-            root = v->rchild;
+            replaceRoot(v->rchild);
         }
         v->rchild->color = vColor;
         u = v->rchild;       
@@ -252,19 +261,25 @@ void RBTree<T>::fixDoubleBlack(Node* node) {
         return;
     }
 
-    while(tmp->color == DOUBLEBLACK && tmp != root && tmp != nullptr) {
+
+    while(tmp->color == DOUBLEBLACK && tmp != nullptr) {
+        if(tmp == root) {
+            tmp->color = BLACK;
+            return;
+        }
         Node* sibling = getSibling(tmp);
         if(sibling->color == BLACK && (sibling->lchild->color == RED || sibling->rchild->color == RED)) {
             int parentColor = tmp->parent->color;
-            if (sibling->lchild->color == RED) {
-                restructure(sibling->lchild);
-            } else {
+            Node* gp = tmp->parent;
+            if (sibling->rchild->color == RED) {
                 restructure(sibling->rchild);
+            } else {
+                restructure(sibling->lchild);
             }
-                tmp->parent->parent->color = parentColor;
-                tmp->parent->color = BLACK;
-                getSibling(tmp->parent)->color = BLACK;
-                tmp->color = BLACK;
+            gp->parent->color = parentColor;
+            gp->color = BLACK;
+            getSibling(gp)->color = BLACK;
+            tmp->color = BLACK;
             return;
         }
         else if(sibling->color == BLACK && (sibling->lchild->color == BLACK && sibling->rchild->color == BLACK)) {
@@ -277,6 +292,7 @@ void RBTree<T>::fixDoubleBlack(Node* node) {
             (sibling == sibling->parent->rchild) ? restructure(sibling->rchild) : restructure(sibling->lchild);
             sibling->color = BLACK;
             sibling->parent->color = RED;
+            tmp = getSibling(sibling);
         }
     }
 }
@@ -288,6 +304,13 @@ void RBTree<T>::makeExternal(Node* node) {
     node->rchild = nullptr;
     node->data = nullptr;
     node->isExternal = true;
+    return;
+}
+template<class T>
+void RBTree<T>::replaceRoot(Node* node) {
+    root->lchild->parent = node;
+    root->rchild->parent = node;
+    root = node;
     return;
 }
 template<class T>
