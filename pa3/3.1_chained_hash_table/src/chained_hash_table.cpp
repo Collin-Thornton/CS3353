@@ -12,7 +12,7 @@ HashTable::HashTable(int length) {
     s = 0;
 }
 HashTable::~HashTable() {
-    //delete table;
+    delete[] table;
 }
 
 int HashTable::insert(int key) {

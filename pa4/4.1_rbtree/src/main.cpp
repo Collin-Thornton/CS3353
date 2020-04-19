@@ -33,8 +33,6 @@ const string HEADER = R"(
 
 using namespace std;
 
-void getJob(string line, string &name, int &p, int &a, int &l);
-
 int main(int argc, char** argv) {
     cout << HEADER << endl << endl << endl;
 

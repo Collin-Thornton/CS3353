@@ -26,6 +26,9 @@ class DoublyLinked {
         };
 
         struct Node* create_node(T key, Node* next = nullptr, Node* prev = nullptr);
+        
+        Node* HEAD;
+        Node* TAIL;
 
     public:
         DoublyLinked(bool allow_dupplicates = false);
@@ -41,9 +44,6 @@ class DoublyLinked {
         int getSize();
 
         std::string toString();
-        
-        Node* HEAD;
-        Node* TAIL;
 };
 
 #include "DoublyLinked_impl.hpp"

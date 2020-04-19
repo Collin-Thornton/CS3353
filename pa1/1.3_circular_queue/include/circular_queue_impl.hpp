@@ -26,7 +26,7 @@ int CircularQueue<T>::insert(T key) {
     return 1;
 }
 template <class T>
-T CircularQueue<T>::pull() {
+T CircularQueue<T>::remove() {
     if(--len < 0) throw std::invalid_argument("QUEUE UNDERFLOW");
     return queue[(first++%size)];
 }

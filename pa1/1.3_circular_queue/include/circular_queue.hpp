@@ -23,7 +23,7 @@ class CircularQueue {
         ~CircularQueue();
 
         int insert(T key);
-        T pull();
+        T remove();
 
         std::string toString();
 
