@@ -148,7 +148,7 @@ int** getMatrix(string& fname, int& size) {
     if(!file.is_open()) { cout << "FILE NOT FOUND.\nEXITING." << endl; exit(1); }
 
     string line;
-    DataStructures::CircularQueue<string> inputQueue;
+    DataStructures::CircularQueue<string> inputQueue = DataStructures::CircularQueue<string>();
 
     size = 0;
     while(getline(file, line)) {
