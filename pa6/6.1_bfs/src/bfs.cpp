@@ -51,6 +51,7 @@ int main(int argc, char** argv) {
     cout << "Enter the Source Node Location:\t ";
     cin >> node;
 
+
     try {
         source = atoi(node.c_str()) - 1;
     } catch (int e) {
@@ -147,7 +148,7 @@ int** getMatrix(string& fname, int& size) {
     ifstream file(fname);
     if(!file.is_open()) { cout << "FILE NOT FOUND.\nEXITING." << endl; exit(1); }
 
-    string line;
+    string line = " ";
     DataStructures::CircularQueue<string> inputQueue = DataStructures::CircularQueue<string>();
 
     size = 0;
@@ -165,8 +166,15 @@ int** getMatrix(string& fname, int& size) {
         for(int j=0; j<size; ++j) {
             int entry = 0;
             try {
-                entry = atoi(line.substr(space, line.find(' ', space+1)).c_str());
-                space = line.find(' ', space+1);
+                short next = line.find(' ', space+1);
+                if(next != string::npos) {
+                    string sbt = line.substr(space, next);
+                    entry = atoi(sbt.c_str());
+                    space = next;
+                }
+                else {
+                    entry = atoi(line.substr(space).c_str());
+                }
             }
             catch(int e) {
                 cout << "ENSURE ALL MATRIX ENTRIES ARE INTS" << endl;

@@ -38,18 +38,18 @@ namespace DataStructures {
                 for(int i=0; i<=len; ++ i) {
                     new_queue[i] = queue[i];
                 }
+                for(int i=len+1; i<length; ++i) new_queue[i] = T();
                 this->s = length;
 
                 delete[] queue;
                 queue = new_queue;
-                new_queue = NULL;
                 
                 return;
             }
 
             T* queue;
             int first = 0, len = 0, s = 0;
-            bool dynamic;
+            bool dynamic = true;
             
         public:
             CircularQueue(bool dynamic = true, int s = 10) {
