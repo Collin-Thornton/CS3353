@@ -1,0 +1,86 @@
+CS3353
+Data Structures and Algorithm Analysis I
+Programming Assignment
+
+Implement the BFS (Breadth First Search) and DFS (Depth First Search)
+Algorithms we covered in class, then topological sort and SCC.
+
+
+1. BFS: shortest distance from the source on each vertex once the algorithm completed
+
+Input: take an input graph in the form of adjacency matrix.
+
+0 1 0 0 1 0 0 0
+1 0 0 0 0 1 0 0
+0 0 0 1 0 1 1 0
+0 0 1 0 0 0 1 1
+1 0 0 0 0 0 0 0
+0 1 1 0 0 0 1 0
+0 0 1 1 0 1 0 1
+0 0 0 1 0 0 1 0
+
+Output: an adjacency matrix of a shortest path tree and each coordinate along diagonal
+should contain the distance from the source to each vertex once the algorithm completed
+
+1 1 0 0 1 0 0 0
+1 0 0 0 0 1 0 0
+0 0 2 1 0 1 0 0
+0 0 1 3 0 0 0 0
+1 0 0 0 2 0 0 0
+0 1 1 0 0 1 1 0
+0 0 0 0 0 1 2 1
+0 0 0 0 0 0 1 3
+
+
+2. DFS: discovery time/finish time on each vertex
+
+Rules to follow to simplify the execution of the algorithm:
+a. Start from vertex (3,3) assuming indexing the vertices with (1,1) - (8.8) in this particular 
+sample graph for your testing purpose.
+b. At every vertex, process its  outgoing adjacent vertices in an arbitraty order 
+c. Whenever we need to restart, do it from the white vertex with the smallest index value.
+
+
+Input: take an input graph in the form of adjacency matrix.
+
+0 1 0 0 0 0 0 0
+0 0 1 0 1 1 0 0
+0 0 0 1 0 0 1 0
+0 0 1 0 0 0 0 1
+1 0 0 0 0 1 0 0
+0 0 0 0 0 0 1 0
+0 0 0 0 0 1 0 1
+0 0 0 0 0 0 0 1
+
+(* Notice that (8,8) is a self loop)
+
+Output: an adjacency matrix of a DFS tree and each coordinate along diagonal
+should contain the (discovery time/finish time) of each vertex once the algorithm completed
+
+(13/14) 0 0 0 0 0 0 0
+0 (11/16) 0 0 1 0 0 0
+0 0 ( 1/10) 1 0 0 1 0
+0 0 0 ( 8/ 9) 0 0 0 0
+1 0 0 0 (12/15) 0 0 0
+0 0 0 0 0 ( 3/ 4) 0 0
+0 0 0 0 0 1 ( 2/ 7) 1
+0 0 0 0 0 0 0 ( 5/ 6)
+
+(* Notice that (8,8) was a self loop in the input and overwritten by (5/6) once the algorithm is completed)
+
+3. Implement topological sort.
+
+Input: the output from the above DFS
+
+Output: a list of nodes sorted in non-decreasing order
+
+(11/16), (12/15), (13,14), (1/10), (8/9), (2/7), (5/6), (3/4)
+
+4. Implement strongly connected components
+
+Input: the output from the above DFS
+
+Output: a topologically sorted list of nodes per component in a non-decreasing
+order by the number of nodes 
+
+((11/16), (12/15), 13/14)), ((1/10), (8/9)), ((2/7), (3/4)), ((5/6))
